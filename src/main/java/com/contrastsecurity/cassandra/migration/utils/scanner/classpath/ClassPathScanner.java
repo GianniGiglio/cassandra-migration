@@ -219,6 +219,10 @@ public class ClassPathScanner {
             return new JarFileClassPathLocationScanner();
         }
 
+        if ("bundle".equals(protocol)) {
+            return new OsgiClassPathLocationScanner();
+        }
+
         FeatureDetector featureDetector = new FeatureDetector(classLoader);
 
         return null;

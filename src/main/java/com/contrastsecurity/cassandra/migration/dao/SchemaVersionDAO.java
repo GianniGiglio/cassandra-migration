@@ -47,7 +47,7 @@ public class SchemaVersionDAO {
         }
 
         Statement statement = new SimpleStatement(
-                "CREATE TABLE IF NOT EXISTS " + keyspace.getName() + "." + tableName + "(" +
+                "CREATE TABLE IF NOT EXISTS " +  keyspace.getName() + "." + tableName + "(" +
                         "  version_rank int," +
                         "  installed_rank int," +
                         "  version text," +
@@ -82,7 +82,7 @@ public class SchemaVersionDAO {
                 .select()
                 .column("columnfamily_name")
                 .from("System", "schema_columnfamilies")
-                .where(eq("keyspace_name", keyspace.getName()))
+                .where(eq("keyspace_name", keyspace.getKeySpaceSystemName()))
                 .and(in("columnfamily_name", tableName, tableName + COUNTS_TABLE_NAME_SUFFIX));
         statement.setConsistencyLevel(ConsistencyLevel.ALL);
         ResultSet results = session.execute(statement);

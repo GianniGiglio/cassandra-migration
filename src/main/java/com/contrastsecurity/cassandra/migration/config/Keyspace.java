@@ -1,5 +1,7 @@
 package com.contrastsecurity.cassandra.migration.config;
 
+import com.datastax.driver.core.Metadata;
+
 public class Keyspace {
     private static final String PROPERTY_PREFIX = "cassandra.migration.keyspace.";
 
@@ -25,6 +27,7 @@ public class Keyspace {
 
     private Cluster cluster;
     private String name;
+    private boolean quoted=false;
 
     public Keyspace() {
         cluster = new Cluster();
@@ -32,8 +35,22 @@ public class Keyspace {
         if (null != keyspaceP && keyspaceP.trim().length() != 0)
             this.name = keyspaceP;
     }
+    
+    
 
-    public Cluster getCluster() {
+    public boolean isQuoted() {
+		return quoted;
+	}
+
+
+
+	public void setQuoted(boolean quoted) {
+		this.quoted = quoted;
+	}
+
+
+
+	public Cluster getCluster() {
         return cluster;
     }
 
@@ -42,7 +59,11 @@ public class Keyspace {
     }
 
     public String getName() {
-        return name;
+        return isQuoted()?Metadata.quote(name):name;
+    }
+    
+    public String getKeySpaceSystemName(){
+    	return name;
     }
 
     public void setName(String name) {

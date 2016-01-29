@@ -131,8 +131,6 @@ public class CassandraMigration {
     <T> T execute(Action<T> action) {
         T result;
 
-        VersionPrinter.printVersion(classLoader);
-
         com.datastax.driver.core.Cluster cluster = null;
         Session session = null;
         try {
@@ -163,7 +161,7 @@ public class CassandraMigration {
             List<KeyspaceMetadata> keyspaces = metadata.getKeyspaces();
             boolean keyspaceExists = false;
             for (KeyspaceMetadata keyspaceMetadata : keyspaces) {
-                if (keyspaceMetadata.getName().equalsIgnoreCase(keyspace.getName()))
+                if (keyspaceMetadata.getName().equalsIgnoreCase(keyspace.getName())|| Metadata.quote(keyspaceMetadata.getName()).equalsIgnoreCase(keyspace.getName()))
                     keyspaceExists = true;
             }
             if (keyspaceExists)
